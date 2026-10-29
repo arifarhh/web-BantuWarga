@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Testing coverage 
+coverage/
+.nyc_output/
