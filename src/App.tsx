@@ -1,8 +1,9 @@
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import { AuthProvider } from './context/AuthContext'
 import PublicLayout from './layouts/PublicLayout'
+
+import ProtectedRoute from './components/common/ProtectedRoute'
 
 import HomePage from './pages/home/HomePage'
 import ProposalPage from './pages/proposal/ProposalPage'
@@ -17,11 +18,21 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          {/* Halaman dengan Navbar dan Footer */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/proposal" element={<ProposalPage />} />
+
+            <Route
+              path="/proposal"
+              element={
+                <ProtectedRoute>
+                  <ProposalPage />
+                </ProtectedRoute>
+              }
+            />
           </Route>
 
+          {/* Halaman autentikasi */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-otp" element={<VerifyOTPPage />} />

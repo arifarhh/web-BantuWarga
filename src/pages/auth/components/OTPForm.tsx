@@ -8,9 +8,15 @@ interface OTPFormProps {
   phone: string
   name?: string
   flow: 'login' | 'register'
+  redirectTo?: string
 }
 
-export default function OTPForm({ phone, name, flow }: OTPFormProps) {
+export default function OTPForm({
+  phone,
+  name,
+  flow,
+  redirectTo,
+}: OTPFormProps) {
   const navigate = useNavigate()
   const { login } = useAuth()
   const [otp, setOtp] = useState('')
@@ -29,7 +35,7 @@ export default function OTPForm({ phone, name, flow }: OTPFormProps) {
       phone,
     })
 
-    navigate('/profile', { replace: true })
+    navigate(redirectTo || '/', { replace: true })
   }
 
   return (

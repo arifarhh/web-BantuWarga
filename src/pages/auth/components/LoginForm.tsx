@@ -1,14 +1,24 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Phone, ArrowRight, ShieldCheck } from 'lucide-react'
 import type { FormEvent } from 'react'
 
 export default function LoginForm() {
   const navigate = useNavigate()
+  const location = useLocation()
+
   const [phone, setPhone] = useState('')
   const [error, setError] = useState('')
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const from = location.state?.from
+    const redirectTo =
+    from?.pathname &&
+    from.pathname.startsWith('/') &&
+    !from.pathname.startsWith('//')
+        ? `${from.pathname}${from.search ?? ''}${from.hash ?? ''}`
+        : '/'
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!/^08\d{8,13}$/.test(phone)) {
@@ -22,6 +32,7 @@ export default function LoginForm() {
       state: {
         phone,
         flow: 'login',
+        redirectTo,
       },
     })
   }
@@ -35,6 +46,7 @@ export default function LoginForm() {
 
         <div className="flex items-center rounded-lg border border-[var(--line)] px-3 focus-within:border-[var(--green)]">
           <Phone size={17} className="text-[var(--muted)]" />
+
           <input
             type="tel"
             value={phone}
