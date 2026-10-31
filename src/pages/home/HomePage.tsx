@@ -1,6 +1,7 @@
 
 import HeroSection from './components/HeroSection'
 import StatisticsSection from './components/StatisticsSection'
+import ServicesSection from './components/ServicesSection'
 
 export default function HomePage() {
   return (
@@ -9,9 +10,7 @@ export default function HomePage() {
 
       <StatisticsSection />
 
-      <section id="layanan" className="scroll-mt-24 py-20">
-        {/* Services Section akan dibuat berikutnya */}
-      </section>
+      <ServicesSection />
 
       <section
         id="transparansi"
