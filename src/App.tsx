@@ -1,7 +1,9 @@
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 import PublicLayout from './layouts/PublicLayout'
 import HomePage from './pages/home/HomePage'
+import ProposalPage from './pages/proposal/ProposalPage'
 
 function App() {
   return (
@@ -9,6 +11,7 @@ function App() {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/proposal" element={<ProposalPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
