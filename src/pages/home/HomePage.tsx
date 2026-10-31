@@ -3,6 +3,8 @@ import StatisticsSection from './components/StatisticsSection'
 import ServicesSection from './components/ServicesSection'
 import TransparencySection from './components/TransparencySection'
 import BeneficiariesSection from './components/BeneficiariesSection'
+import HowItWorksSection from './components/HowItWorksSection'
+import CTASection from './components/CTASection'
 
 export default function HomePage() {
   return (
@@ -12,17 +14,8 @@ export default function HomePage() {
       <ServicesSection />
       <TransparencySection />
       <BeneficiariesSection />
-
-      <section
-        id="cara-kerja"
-        className="scroll-mt-24 py-20"
-      >
-        {/* Cara Kerja */}
-      </section>
-
-      <section id="usul-warga" className="scroll-mt-24">
-        {/* CTA */}
-      </section>
+      <HowItWorksSection />
+      <CTASection />
     </>
   )
 }
