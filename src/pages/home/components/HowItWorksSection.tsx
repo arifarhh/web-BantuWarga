@@ -47,16 +47,16 @@ export default function HowItWorksSection() {
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         {/* Heading */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#E3EFE7] px-4 py-2 text-sm font-semibold text-[var(--green-dark)]">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#E3EFE7] px-4 py-2 text-sm font-semibold text-[var(--teal)]">
             <ShieldCheck size={16} />
             Alur Layanan
           </div>
 
-          <h2 className="text-3xl font-bold leading-tight text-[var(--navy-dark)] md:text-4xl">
+          <h2 className="text-3xl font-bold leading-tight text-[var(--dark-teal)] md:text-4xl">
             Proses yang jelas, dari pengajuan hingga keputusan.
           </h2>
 
-          <p className="mt-4 text-base leading-relaxed text-[var(--text-muted)]">
+          <p className="mt-4 text-base leading-relaxed text-[var(--text)]">
             Setiap pengajuan melalui tahapan yang terstruktur agar proses
             pemeriksaan dan tindak lanjut dapat dipantau oleh masyarakat.
           </p>
@@ -69,10 +69,9 @@ export default function HowItWorksSection() {
 
             return (
               <div key={step.number} className="relative">
-                {/* Step Card */}
                 <div className="h-full rounded-2xl border border-[#E1EAE3] bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#173C51]/5">
                   <div className="mb-6 flex items-center justify-between">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F3EA] text-[var(--green-dark)]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F3EA] text-[var(--teal)]">
                       <Icon size={23} />
                     </div>
 
@@ -81,11 +80,11 @@ export default function HowItWorksSection() {
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-[var(--navy-dark)]">
+                  <h3 className="text-lg font-bold text-[var(--dark-teal)]">
                     {step.title}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--text)]">
                     {step.description}
                   </p>
                 </div>
@@ -102,12 +101,13 @@ export default function HowItWorksSection() {
         </div>
 
         {/* Additional Information */}
-        <div className="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl bg-[var(--navy-dark)] p-6 text-white md:flex-row md:items-center md:p-8">
+        <div className="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl bg-[var(--dark-teal)] p-6 text-white md:flex-row md:items-center md:p-8">
           <div className="max-w-2xl">
-            <h3 className="text-lg font-bold">
+            <h3 className="text-lg font-bold text-white">
               Ingin mengetahui perkembangan pengajuan?
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-white/70">
+
+            <p className="mt-2 text-sm leading-relaxed text-white/80">
               Gunakan nomor tiket untuk melihat tahapan dan status
               pengajuan secara berkala.
             </p>
@@ -115,11 +115,14 @@ export default function HowItWorksSection() {
 
           <a
             href="#lacak-tiket"
-            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-[var(--navy-dark)] transition hover:bg-[#E8F3EA]"
-          >
+            className="inline-flex items-center justify-center rounded-lg
+                bg-[#12544F] px-6 py-3 font-semibold text-white
+                shadow-md transition-all duration-200
+                hover:bg-[#2A835F] hover:shadow-lg
+                hover:-translate-y-0.5"
+            >
             Lacak pengajuan
-            <ArrowRight size={17} />
-          </a>
+        </a>
         </div>
       </div>
     </section>
