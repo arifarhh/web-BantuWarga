@@ -5,7 +5,9 @@ export default function LoginPage() {
   return (
     <AuthLayout
       title="Selamat Datang"
-      description="Masuk ke akun BantuWarga untuk mengakses layanan warga."
+      description="Masuk untuk mengakses layanan BantuWarga."
+      backTo="/"
+      backLabel="Kembali ke Beranda"
     >
       <LoginForm />
     </AuthLayout>

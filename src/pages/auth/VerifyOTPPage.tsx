@@ -20,6 +20,8 @@ export default function VerifyOTPPage() {
     <AuthLayout
       title="Verifikasi OTP"
       description="Selesaikan verifikasi untuk melanjutkan ke akun BantuWarga."
+      backTo={state.flow === 'register' ? '/register' : '/login'}
+      backLabel="Kembali"
     >
       <OTPForm
         phone={state.phone}

@@ -5,7 +5,9 @@ export default function RegisterPage() {
   return (
     <AuthLayout
       title="Buat Akun"
-      description="Daftarkan diri untuk menggunakan layanan warga BantuWarga."
+      description="Lengkapi data diri untuk membuat akun BantuWarga."
+      backTo="/login"
+      backLabel="Kembali ke Login"
     >
       <RegisterForm />
     </AuthLayout>
