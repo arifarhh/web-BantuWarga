@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Menu,
   X,
@@ -16,10 +16,41 @@ const navigation = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('beranda')
+
+  // Menentukan menu aktif berdasarkan section yang terlihat
+  useEffect(() => {
+    const sections = navigation
+      .map((item) => document.querySelector(item.href))
+      .filter((section): section is Element => section !== null)
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSections = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) => b.intersectionRatio - a.intersectionRatio,
+          )
+
+        if (visibleSections.length > 0) {
+          setActiveSection(visibleSections[0].target.id)
+        }
+      },
+      {
+        rootMargin: '-100px 0px -55% 0px',
+        threshold: [0, 0.2, 0.5, 1],
+      },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/95 backdrop-blur-md">
       <div className="container flex h-[76px] items-center justify-between">
+
         {/* Logo */}
         <a href="#beranda" className="flex shrink-0 items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--dark-teal)] text-white">
@@ -38,19 +69,25 @@ export default function Navbar() {
 
         {/* Desktop navigation */}
         <nav className="hidden items-center gap-8 md:flex">
-          {navigation.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`border-b-2 py-7 text-xs font-semibold transition-colors ${
-                item.label === 'Beranda'
-                  ? 'border-[var(--green)] text-[var(--navy)]'
-                  : 'border-transparent text-[var(--text)] hover:border-[var(--green)] hover:text-[var(--green)]'
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
+          {navigation.map((item) => {
+            const sectionId = item.href.replace('#', '')
+            const isActive = activeSection === sectionId
+
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setActiveSection(sectionId)}
+                className={`border-b-2 py-7 text-xs font-semibold transition-colors ${
+                  isActive
+                    ? 'border-[var(--green)] text-[var(--navy)]'
+                    : 'border-transparent text-[var(--text)] hover:border-[var(--green)] hover:text-[var(--green)]'
+                }`}
+              >
+                {item.label}
+              </a>
+            )
+          })}
         </nav>
 
         {/* Desktop actions */}
@@ -89,21 +126,33 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="border-t border-[var(--line)] bg-white px-6 py-4 shadow-lg md:hidden">
           <nav className="container flex flex-col gap-1">
-            {navigation.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="rounded-lg px-3 py-3 text-sm font-semibold text-[var(--text)] transition hover:bg-[var(--green-light)] hover:text-[var(--navy)]"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navigation.map((item) => {
+              const sectionId = item.href.replace('#', '')
+              const isActive = activeSection === sectionId
+
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => {
+                    setActiveSection(sectionId)
+                    setIsMenuOpen(false)
+                  }}
+                  className={`rounded-lg px-3 py-3 text-sm font-semibold transition ${
+                    isActive
+                      ? 'bg-[var(--green-light)] text-[var(--navy)]'
+                      : 'text-[var(--text)] hover:bg-[var(--green-light)] hover:text-[var(--navy)]'
+                  }`}
+                >
+                  {item.label}
+                </a>
+              )
+            })}
 
             <a
               href="#usul-warga"
               onClick={() => setIsMenuOpen(false)}
-              className="mt-2 rounded-lg bg-[var(--dark-teal)] px-4 py-3 text-center text-sm font-bold text-white"
+              className="mt-2 rounded-lg bg-[var(--dark-teal)] px-4 py-3 text-center text-sm font-bold text-white transition hover:bg-[var(--teal)]"
             >
               Usul Warga
             </a>
