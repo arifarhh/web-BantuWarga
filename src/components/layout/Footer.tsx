@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShieldCheck, Phone, ArrowUpRight } from 'lucide-react'
+import { Phone, ArrowUpRight } from 'lucide-react'
 
 const serviceLinks = [
   { label: 'Usul Warga', href: '/proposal' },
@@ -21,10 +21,13 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <a href="#beranda" className="inline-flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--dark-teal)] text-white">
-                <ShieldCheck size={22} />
-              </div>
+            <Link to="/" className="inline-flex items-center gap-3">
+              <img
+                src="/logo/logo-bantu-warga.png"
+                alt="Logo BantuWarga"
+                className="h-10 w-10 object-contain"
+              />
+
               <div>
                 <p className="text-sm font-extrabold text-[var(--navy)]">
                   BantuWarga
@@ -33,7 +36,7 @@ export default function Footer() {
                   PORTAL TRANSPARANSI BANSOS
                 </p>
               </div>
-            </a>
+            </Link>
 
             <p className="mt-5 max-w-xs text-xs leading-6 text-[var(--text)]">
               Kolaborasi pemerintah dan masyarakat untuk bantuan sosial yang

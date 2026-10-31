@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import {
   Menu,
   X,
-  ShieldCheck,
   Bell,
   ChevronDown,
   UserRound,
@@ -68,9 +67,11 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link to="/" className="flex shrink-0 items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--dark-teal)] text-white">
-            <ShieldCheck size={23} strokeWidth={1.8} />
-          </div>
+          <img
+            src="/logo/logo-bantu-warga.png"
+            alt="Logo BantuWarga"
+            className="h-10 w-10 object-contain"
+          />
 
           <div>
             <p className="text-sm font-extrabold tracking-tight text-[var(--navy)]">
