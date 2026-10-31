@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   Bell,
   ChevronDown,
+  LogIn,
 } from 'lucide-react'
 
 const navigation = [
@@ -54,7 +55,7 @@ export default function Navbar() {
       <div className="container flex h-[76px] items-center justify-between">
 
         {/* Logo */}
-        <a href="#beranda" className="flex shrink-0 items-center gap-3">
+        <Link to="/" className="flex shrink-0 items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--dark-teal)] text-white">
             <ShieldCheck size={23} strokeWidth={1.8} />
           </div>
@@ -67,7 +68,7 @@ export default function Navbar() {
               PORTAL TRANSPARANSI BANSOS
             </p>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop navigation */}
         <nav className="hidden items-center gap-8 md:flex">
@@ -104,10 +105,11 @@ export default function Navbar() {
           </button>
 
           <Link
-            to="/proposal"
-            className="inline-flex items-center gap-2 rounded-lg border border-[var(--line)] px-4 py-2.5 text-xs font-bold text-[var(--navy)] transition hover:border-[var(--green)] hover:bg-[var(--green-light)]"
+            to="/login"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--dark-teal)] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[var(--teal)]"
           >
-            Usul Warga
+            <LogIn size={15} />
+            Masuk
             <ChevronDown size={13} className="-rotate-90" />
           </Link>
         </div>
@@ -152,11 +154,12 @@ export default function Navbar() {
             })}
 
             <Link
-              to="/proposal"
+              to="/login"
               onClick={() => setIsMenuOpen(false)}
-              className="mt-2 rounded-lg bg-[var(--dark-teal)] px-4 py-3 text-center text-sm font-bold text-white transition hover:bg-[var(--teal)]"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--dark-teal)] px-4 py-3 text-center text-sm font-bold text-white transition hover:bg-[var(--teal)]"
             >
-              Usul Warga
+              <LogIn size={16} />
+              Masuk
             </Link>
           </nav>
         </div>
