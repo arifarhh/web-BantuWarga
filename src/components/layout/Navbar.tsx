@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import {
   Menu,
@@ -13,11 +14,17 @@ import {
 
 import { useAuth } from '../../context/AuthContext'
 
-const navigation = [
+const guestNavigation = [
   { label: 'Beranda', href: '#beranda' },
   { label: 'Data Penerima', href: '#data-penerima' },
   { label: 'Transparansi', href: '#transparansi' },
   { label: 'Cara Kerja', href: '#cara-kerja' },
+]
+
+const userNavigation = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Usul Warga', href: '/proposal' },
+  { label: 'Sanggah Warga', href: '/#sanggah-warga' },
 ]
 
 export default function Navbar() {
@@ -26,9 +33,18 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('beranda')
 
   const { user, isAuthenticated, logout } = useAuth()
+  const location = useLocation()
+
+  const navigation = isAuthenticated
+    ? userNavigation
+    : guestNavigation
 
   useEffect(() => {
-    const sections = navigation
+    if (isAuthenticated || location.pathname !== '/') {
+      return
+    }
+
+    const sections = guestNavigation
       .map((item) => document.querySelector(item.href))
       .filter((section): section is Element => section !== null)
 
@@ -53,11 +69,39 @@ export default function Navbar() {
     sections.forEach((section) => observer.observe(section))
 
     return () => observer.disconnect()
-  }, [])
+  }, [isAuthenticated, location.pathname])
+
+  const isNavigationActive = (item: (typeof navigation)[number]) => {
+    if (!isAuthenticated) {
+      return activeSection === item.href.replace('#', '')
+    }
+
+    if (item.href === '/proposal') {
+      return location.pathname === '/proposal'
+    }
+
+    if (item.href === '/#sanggah-warga') {
+      return (
+        location.pathname === '/' &&
+        location.hash === '#sanggah-warga'
+      )
+    }
+
+    if (item.href === '/') {
+      return location.pathname === '/' &&
+        location.hash !== '#sanggah-warga'
+    }
+
+    return false
+  }
 
   const handleLogout = () => {
     logout()
     setIsProfileMenuOpen(false)
+    setIsMenuOpen(false)
+  }
+
+  const handleNavigationClick = () => {
     setIsMenuOpen(false)
   }
 
@@ -66,7 +110,10 @@ export default function Navbar() {
       <div className="container flex h-[76px] items-center justify-between">
 
         {/* Logo */}
-        <Link to="/" className="flex shrink-0 items-center gap-3">
+        <Link
+          to="/"
+          className="flex shrink-0 items-center gap-3"
+        >
           <img
             src="/logo/logo-bantu-warga.png"
             alt="Logo BantuWarga"
@@ -86,22 +133,32 @@ export default function Navbar() {
         {/* Desktop navigation */}
         <nav className="hidden items-center gap-8 md:flex">
           {navigation.map((item) => {
-            const sectionId = item.href.replace('#', '')
-            const isActive = activeSection === sectionId
+            const isActive = isNavigationActive(item)
+            const isAnchor = item.href.startsWith('#')
 
-            return (
+            const className = `border-b-2 py-7 text-xs font-semibold transition-colors ${
+              isActive
+                ? 'border-[var(--green)] text-[var(--navy)]'
+                : 'border-transparent text-[var(--text)] hover:border-[var(--green)] hover:text-[var(--green)]'
+            }`
+
+            return isAnchor ? (
               <a
                 key={item.label}
                 href={item.href}
-                onClick={() => setActiveSection(sectionId)}
-                className={`border-b-2 py-7 text-xs font-semibold transition-colors ${
-                  isActive
-                    ? 'border-[var(--green)] text-[var(--navy)]'
-                    : 'border-transparent text-[var(--text)] hover:border-[var(--green)] hover:text-[var(--green)]'
-                }`}
+                onClick={() => setActiveSection(item.href.replace('#', ''))}
+                className={className}
               >
                 {item.label}
               </a>
+            ) : (
+              <Link
+                key={item.label}
+                to={item.href}
+                className={className}
+              >
+                {item.label}
+              </Link>
             )
           })}
         </nav>
@@ -164,7 +221,8 @@ export default function Navbar() {
               to="/login"
               className="inline-flex items-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-2.5 text-xs font-bold text-[var(--teal)] transition hover:bg-[var(--mint)]"
             >
-              <LogIn size={15} /> Masuk
+              <LogIn size={15} />
+              Masuk
               <ChevronDown size={13} className="-rotate-90" />
             </Link>
           )}
@@ -187,25 +245,36 @@ export default function Navbar() {
         <div className="border-t border-[var(--line)] bg-white px-6 py-4 shadow-lg md:hidden">
           <nav className="container flex flex-col gap-1">
             {navigation.map((item) => {
-              const sectionId = item.href.replace('#', '')
-              const isActive = activeSection === sectionId
+              const isActive = isNavigationActive(item)
+              const isAnchor = item.href.startsWith('#')
 
-              return (
+              const className = `rounded-lg px-3 py-3 text-sm font-semibold transition ${
+                isActive
+                  ? 'bg-[var(--green-light)] text-[var(--navy)]'
+                  : 'text-[var(--text)] hover:bg-[var(--green-light)] hover:text-[var(--navy)]'
+              }`
+
+              return isAnchor ? (
                 <a
                   key={item.label}
                   href={item.href}
                   onClick={() => {
-                    setActiveSection(sectionId)
-                    setIsMenuOpen(false)
+                    setActiveSection(item.href.replace('#', ''))
+                    handleNavigationClick()
                   }}
-                  className={`rounded-lg px-3 py-3 text-sm font-semibold transition ${
-                    isActive
-                      ? 'bg-[var(--green-light)] text-[var(--navy)]'
-                      : 'text-[var(--text)] hover:bg-[var(--green-light)] hover:text-[var(--navy)]'
-                  }`}
+                  className={className}
                 >
                   {item.label}
                 </a>
+              ) : (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  onClick={handleNavigationClick}
+                  className={className}
+                >
+                  {item.label}
+                </Link>
               )
             })}
 
@@ -213,7 +282,7 @@ export default function Navbar() {
               <>
                 <Link
                   to="/profile"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleNavigationClick}
                   className="mt-2 flex items-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-sm font-bold text-[var(--navy)]"
                 >
                   <UserRound size={17} />
@@ -232,10 +301,11 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={handleNavigationClick}
                 className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-center text-sm font-bold text-[var(--teal)] transition hover:bg-[var(--mint)]"
               >
-                <LogIn size={16} /> Masuk
+                <LogIn size={16} />
+                Masuk
               </Link>
             )}
           </nav>
