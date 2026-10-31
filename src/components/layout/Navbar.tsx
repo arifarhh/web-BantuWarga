@@ -7,8 +7,12 @@ import {
   ShieldCheck,
   Bell,
   ChevronDown,
+  UserRound,
+  LogOut,
   LogIn,
 } from 'lucide-react'
+
+import { useAuth } from '../../context/AuthContext'
 
 const navigation = [
   { label: 'Beranda', href: '#beranda' },
@@ -19,9 +23,11 @@ const navigation = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('beranda')
 
-  // Menentukan menu aktif berdasarkan section yang terlihat
+  const { user, isAuthenticated, logout } = useAuth()
+
   useEffect(() => {
     const sections = navigation
       .map((item) => document.querySelector(item.href))
@@ -49,6 +55,12 @@ export default function Navbar() {
 
     return () => observer.disconnect()
   }, [])
+
+  const handleLogout = () => {
+    logout()
+    setIsProfileMenuOpen(false)
+    setIsMenuOpen(false)
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/95 backdrop-blur-md">
@@ -104,14 +116,57 @@ export default function Navbar() {
             <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[var(--danger)]" />
           </button>
 
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--dark-teal)] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[var(--teal)]"
-          >
-            <LogIn size={15} />
-            Masuk
-            <ChevronDown size={13} className="-rotate-90" />
-          </Link>
+          {isAuthenticated && user ? (
+            <div className="relative">
+              <button
+                type="button"
+                aria-expanded={isProfileMenuOpen}
+                onClick={() =>
+                  setIsProfileMenuOpen(!isProfileMenuOpen)
+                }
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--line)] px-3 py-2 transition hover:bg-[var(--green-light)]"
+              >
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--green-light)] text-[var(--green)]">
+                  <UserRound size={16} />
+                </div>
+
+                <span className="max-w-24 truncate text-xs font-bold text-[var(--navy)]">
+                  {user.name}
+                </span>
+
+                <ChevronDown size={14} />
+              </button>
+
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-[var(--line)] bg-white p-2 shadow-lg">
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsProfileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2.5 text-xs font-semibold text-[var(--text)] hover:bg-[var(--green-light)]"
+                  >
+                    Profil Saya
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-semibold text-[var(--danger)] hover:bg-red-50"
+                  >
+                    <LogOut size={14} />
+                    Keluar
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-2.5 text-xs font-bold text-[var(--teal)] transition hover:bg-[var(--mint)]"
+            >
+              <LogIn size={15} /> Masuk
+              <ChevronDown size={13} className="-rotate-90" />
+            </Link>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -153,14 +208,35 @@ export default function Navbar() {
               )
             })}
 
-            <Link
-              to="/login"
-              onClick={() => setIsMenuOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--dark-teal)] px-4 py-3 text-center text-sm font-bold text-white transition hover:bg-[var(--teal)]"
-            >
-              <LogIn size={16} />
-              Masuk
-            </Link>
+            {isAuthenticated && user ? (
+              <>
+                <Link
+                  to="/profile"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="mt-2 flex items-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-sm font-bold text-[var(--navy)]"
+                >
+                  <UserRound size={17} />
+                  Profil Saya
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 rounded-lg px-4 py-3 text-left text-sm font-bold text-[var(--danger)] hover:bg-red-50"
+                >
+                  <LogOut size={17} />
+                  Keluar
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setIsMenuOpen(false)}
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-center text-sm font-bold text-[var(--teal)] transition hover:bg-[var(--mint)]"
+              >
+                <LogIn size={16} /> Masuk
+              </Link>
+            )}
           </nav>
         </div>
       )}
