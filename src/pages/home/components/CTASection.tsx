@@ -1,4 +1,6 @@
 
+import { Link } from 'react-router-dom'
+
 import {
   ArrowRight,
   FilePlus2,
@@ -39,8 +41,8 @@ export default function CTASection() {
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {/* Usul Warga */}
-              <a
-                href="#usul-warga"
+              <Link
+                to="/proposal"
                 className="group rounded-2xl border border-white/15 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F3EA] text-[#12544F]">
@@ -59,7 +61,7 @@ export default function CTASection() {
                   Ajukan usulan
                   <ArrowRight size={16} />
                 </span>
-              </a>
+              </Link>
 
               {/* Sanggah Warga */}
               <a

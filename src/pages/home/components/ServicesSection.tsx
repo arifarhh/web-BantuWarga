@@ -1,4 +1,6 @@
 
+import { Link } from 'react-router-dom'
+
 import {
   ArrowUpRight,
   FilePlus2,
@@ -15,7 +17,7 @@ const services = [
     description:
       'Usulkan diri sendiri atau warga sekitar yang dinilai layak menerima bantuan sosial dengan menyertakan informasi dan bukti pendukung.',
     label: 'Pengajuan bantuan',
-    href: '#usul-warga',
+    href: '/proposal',
     icon: FilePlus2,
     iconStyle: 'bg-[#E8F3EA] text-[#4F8B68]',
   },
@@ -82,9 +84,9 @@ export default function ServicesSection() {
             const Icon = service.icon
 
             return (
-              <a
+              <Link
                 key={service.number}
-                href={service.href}
+                to={service.href}
                 className="group relative flex min-h-[285px] flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-[#B8D8C1] hover:shadow-[var(--shadow)]"
               >
                 {/* Card number */}
@@ -124,7 +126,7 @@ export default function ServicesSection() {
 
                 {/* Decorative hover accent */}
                 <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[var(--green)] transition-all duration-300 group-hover:w-full" />
-              </a>
+              </Link>
             )
           })}
         </div>
