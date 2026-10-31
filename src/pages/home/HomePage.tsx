@@ -2,6 +2,7 @@ import HeroSection from './components/HeroSection'
 import StatisticsSection from './components/StatisticsSection'
 import ServicesSection from './components/ServicesSection'
 import TransparencySection from './components/TransparencySection'
+import BeneficiariesSection from './components/BeneficiariesSection'
 
 export default function HomePage() {
   return (
@@ -10,13 +11,7 @@ export default function HomePage() {
       <StatisticsSection />
       <ServicesSection />
       <TransparencySection />
-
-      <section
-        id="data-penerima"
-        className="scroll-mt-24 py-20"
-      >
-        {/* Beneficiaries Preview */}
-      </section>
+      <BeneficiariesSection />
 
       <section
         id="cara-kerja"
