@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+
 import {
   Menu,
   X,
@@ -101,13 +103,13 @@ export default function Navbar() {
             <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[var(--danger)]" />
           </button>
 
-          <a
-            href="#usul-warga"
+          <Link
+            to="/proposal"
             className="inline-flex items-center gap-2 rounded-lg border border-[var(--line)] px-4 py-2.5 text-xs font-bold text-[var(--navy)] transition hover:border-[var(--green)] hover:bg-[var(--green-light)]"
           >
             Usul Warga
             <ChevronDown size={13} className="-rotate-90" />
-          </a>
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -149,13 +151,13 @@ export default function Navbar() {
               )
             })}
 
-            <a
-              href="#usul-warga"
+            <Link
+              to="/proposal"
               onClick={() => setIsMenuOpen(false)}
               className="mt-2 rounded-lg bg-[var(--dark-teal)] px-4 py-3 text-center text-sm font-bold text-white transition hover:bg-[var(--teal)]"
             >
               Usul Warga
-            </a>
+            </Link>
           </nav>
         </div>
       )}

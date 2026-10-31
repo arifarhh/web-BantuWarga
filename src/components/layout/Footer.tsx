@@ -1,8 +1,8 @@
-
+import { Link } from 'react-router-dom'
 import { ShieldCheck, Phone, ArrowUpRight } from 'lucide-react'
 
 const serviceLinks = [
-  { label: 'Usul Warga', href: '#usul-warga' },
+  { label: 'Usul Warga', href: '/proposal' },
   { label: 'Sanggah Warga', href: '#sanggah-warga' },
   { label: 'Lacak Tiket', href: '#lacak-tiket' },
 ]
@@ -18,6 +18,7 @@ export default function Footer() {
     <footer className="border-t border-[var(--line)] bg-[#F3F7F5]">
       <div className="container py-12">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+
           {/* Brand */}
           <div>
             <a href="#beranda" className="inline-flex items-center gap-3">
@@ -48,12 +49,21 @@ export default function Footer() {
             <ul className="space-y-3">
               {serviceLinks.map((item) => (
                 <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="text-xs text-[var(--text)] transition hover:text-[var(--green)]"
-                  >
-                    {item.label}
-                  </a>
+                  {item.href.startsWith('/') ? (
+                    <Link
+                      to={item.href}
+                      className="text-xs text-[var(--text)] transition hover:text-[var(--green)]"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={item.href}
+                      className="text-xs text-[var(--text)] transition hover:text-[var(--green)]"
+                    >
+                      {item.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
