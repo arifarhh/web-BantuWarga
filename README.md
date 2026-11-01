@@ -1,6 +1,6 @@
 # BantuWarga — Portal Transparansi Bantuan Sosial
 
-![BantuWarga](https://drive.google.com/uc?export=view&id=1i1wwhNVKx5FvakQ5pouBh9CCYH90rB_a)
+![BantuWarga](https://drive.google.com/thumbnail?id=1i1wwhNVKx5FvakQ5pouBh9CCYH90rB_a&sz=w1000)
 
 **BantuWarga** merupakan platform digital yang dirancang untuk mendukung transparansi, akuntabilitas, dan partisipasi masyarakat dalam penyaluran bantuan sosial. Platform ini memfasilitasi masyarakat untuk mengajukan usulan, menyampaikan sanggahan, serta memantau perkembangan layanan bantuan sosial melalui satu portal yang mudah diakses.
 
