@@ -1,98 +1,56 @@
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-
 import {
   Menu,
   X,
-  Bell,
   ChevronDown,
   UserRound,
   LogOut,
   LogIn,
 } from 'lucide-react'
-
 import { useAuth } from '../../context/AuthContext'
 
-const guestNavigation = [
-  { label: 'Beranda', href: '#beranda' },
-  { label: 'Data Penerima', href: '#data-penerima' },
-  { label: 'Transparansi', href: '#transparansi' },
-  { label: 'Cara Kerja', href: '#cara-kerja' },
-]
-
-const userNavigation = [
+const navigation = [
   { label: 'Beranda', href: '/' },
-  { label: 'Usul Warga', href: '/proposal' },
-  { label: 'Sanggah Warga', href: '/#sanggah-warga' },
+  {
+    label: 'Layanan Masyarakat',
+    children: [
+      { label: 'Usul Warga', href: '/proposal' },
+      { label: 'Sanggah Warga', href: '/dispute' },
+    ],
+  },
+  { label: 'Lacak Tiket', href: '/tracking' },
+  { label: 'Panduan & Informasi', href: '/panduan' },
+  { label: 'Tentang BantuWarga', href: '/tentang' },
 ]
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState('beranda')
+  const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false)
+  const [isMobileServiceOpen, setIsMobileServiceOpen] = useState(false)
 
   const { user, isAuthenticated, logout } = useAuth()
   const location = useLocation()
 
-  const navigation = isAuthenticated
-    ? userNavigation
-    : guestNavigation
-
   useEffect(() => {
-    if (isAuthenticated || location.pathname !== '/') {
-      return
+    setIsMenuOpen(false)
+    setIsProfileMenuOpen(false)
+    setIsServiceMenuOpen(false)
+    setIsMobileServiceOpen(false)
+  }, [location.pathname, location.hash])
+
+  const isServiceActive =
+    location.pathname === '/proposal' ||
+    location.pathname === '/dispute'
+
+  const isActive = (href: string) => {
+    if (href === '/') {
+      return location.pathname === '/'
     }
 
-    const sections = guestNavigation
-      .map((item) => document.querySelector(item.href))
-      .filter((section): section is Element => section !== null)
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleSections = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) => b.intersectionRatio - a.intersectionRatio,
-          )
-
-        if (visibleSections.length > 0) {
-          setActiveSection(visibleSections[0].target.id)
-        }
-      },
-      {
-        rootMargin: '-100px 0px -55% 0px',
-        threshold: [0, 0.2, 0.5, 1],
-      },
-    )
-
-    sections.forEach((section) => observer.observe(section))
-
-    return () => observer.disconnect()
-  }, [isAuthenticated, location.pathname])
-
-  const isNavigationActive = (item: (typeof navigation)[number]) => {
-    if (!isAuthenticated) {
-      return activeSection === item.href.replace('#', '')
-    }
-
-    if (item.href === '/proposal') {
-      return location.pathname === '/proposal'
-    }
-
-    if (item.href === '/#sanggah-warga') {
-      return (
-        location.pathname === '/' &&
-        location.hash === '#sanggah-warga'
-      )
-    }
-
-    if (item.href === '/') {
-      return location.pathname === '/' &&
-        location.hash !== '#sanggah-warga'
-    }
-
-    return false
+    return location.pathname === href
   }
 
   const handleLogout = () => {
@@ -101,13 +59,23 @@ export default function Navbar() {
     setIsMenuOpen(false)
   }
 
-  const handleNavigationClick = () => {
-    setIsMenuOpen(false)
-  }
+  const desktopLinkClass = (active: boolean) =>
+    `inline-flex h-[76px] items-center whitespace-nowrap border-b-2 text-[12px] font-semibold leading-none transition-colors duration-200 ${
+      active
+        ? 'border-[var(--green)] text-[var(--navy)]'
+        : 'border-transparent text-[var(--text)] hover:border-[var(--green)] hover:text-[var(--green)]'
+    }`
+
+  const mobileLinkClass = (active: boolean) =>
+    `block rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${
+      active
+        ? 'bg-[var(--green-light)] text-[var(--navy)]'
+        : 'text-[var(--text)] hover:bg-[var(--green-light)] hover:text-[var(--navy)]'
+    }`
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/95 backdrop-blur-md">
-      <div className="container flex h-[76px] items-center justify-between">
+      <div className="container flex h-[76px] items-center justify-between gap-6">
 
         {/* Logo */}
         <Link
@@ -124,38 +92,69 @@ export default function Navbar() {
             <p className="text-sm font-extrabold tracking-tight text-[var(--navy)]">
               BantuWarga
             </p>
-            <p className="mt-0.5 text-[9px] font-medium tracking-[0.08em] text-[var(--muted)]">
+            <p className="mt-0.5 whitespace-nowrap text-[9px] font-medium tracking-[0.08em] text-[var(--muted)]">
               PORTAL TRANSPARANSI BANSOS
             </p>
           </div>
         </Link>
 
-        {/* Desktop navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        {/* Desktop Navigation */}
+        <nav className="hidden flex-1 items-center justify-center gap-6 xl:flex 2xl:gap-8">
           {navigation.map((item) => {
-            const isActive = isNavigationActive(item)
-            const isAnchor = item.href.startsWith('#')
+            if (item.children) {
+              return (
+                <div
+                  key={item.label}
+                  className="relative h-[76px] flex items-center"
+                  onMouseEnter={() => setIsServiceMenuOpen(true)}
+                  onMouseLeave={() => setIsServiceMenuOpen(false)}
+                >
+                  <button
+                    type="button"
+                    aria-expanded={isServiceMenuOpen}
+                    onClick={() =>
+                      setIsServiceMenuOpen(!isServiceMenuOpen)
+                    }
+                    className={`${desktopLinkClass(isServiceActive)} gap-1.5 border-x-0 border-t-0 bg-transparent p-0 font-[inherit]`}
+                  >
+                    <span className="font-semibold">
+                      {item.label}
+                    </span>
+                    <ChevronDown
+                      size={13}
+                      strokeWidth={1.8}
+                      className={`transition-transform duration-200 ${
+                        isServiceMenuOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
 
-            const className = `border-b-2 py-7 text-xs font-semibold transition-colors ${
-              isActive
-                ? 'border-[var(--green)] text-[var(--navy)]'
-                : 'border-transparent text-[var(--text)] hover:border-[var(--green)] hover:text-[var(--green)]'
-            }`
+                  {isServiceMenuOpen && (
+                    <div className="absolute left-0 top-[calc(100%-1px)] z-50 w-48 rounded-xl border border-[var(--line)] bg-white p-2 shadow-lg">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          to={child.href}
+                          className={`block rounded-lg px-3 py-2.5 text-xs font-semibold transition-colors ${
+                            isActive(child.href)
+                              ? 'bg-[var(--green-light)] text-[var(--navy)]'
+                              : 'text-[var(--text)] hover:bg-[var(--green-light)] hover:text-[var(--navy)]'
+                          }`}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            }
 
-            return isAnchor ? (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setActiveSection(item.href.replace('#', ''))}
-                className={className}
-              >
-                {item.label}
-              </a>
-            ) : (
+            return (
               <Link
                 key={item.label}
                 to={item.href}
-                className={className}
+                className={desktopLinkClass(isActive(item.href))}
               >
                 {item.label}
               </Link>
@@ -163,17 +162,8 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Desktop actions */}
-        <div className="hidden items-center gap-4 md:flex">
-          <button
-            type="button"
-            aria-label="Notifikasi"
-            className="relative rounded-lg p-2 text-[var(--text)] transition hover:bg-[var(--green-light)]"
-          >
-            <Bell size={18} strokeWidth={1.7} />
-            <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[var(--danger)]" />
-          </button>
-
+        {/* Desktop Actions */}
+        <div className="hidden shrink-0 items-center xl:flex">
           {isAuthenticated && user ? (
             <div className="relative">
               <button
@@ -196,7 +186,7 @@ export default function Navbar() {
               </button>
 
               {isProfileMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-[var(--line)] bg-white p-2 shadow-lg">
+                <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-xl border border-[var(--line)] bg-white p-2 shadow-lg">
                   <Link
                     to="/profile"
                     onClick={() => setIsProfileMenuOpen(false)}
@@ -223,67 +213,84 @@ export default function Navbar() {
             >
               <LogIn size={15} />
               Masuk
-              <ChevronDown size={13} className="-rotate-90" />
             </Link>
           )}
         </div>
 
-        {/* Mobile menu button */}
+        {/* Mobile Menu Button */}
         <button
           type="button"
           aria-label={isMenuOpen ? 'Tutup menu' : 'Buka menu'}
           aria-expanded={isMenuOpen}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="rounded-lg p-2 text-[var(--navy)] hover:bg-[var(--green-light)] md:hidden"
+          className="rounded-lg p-2 text-[var(--navy)] hover:bg-[var(--green-light)] xl:hidden"
         >
           {isMenuOpen ? <X size={23} /> : <Menu size={23} />}
         </button>
       </div>
 
-      {/* Mobile navigation */}
+      {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="border-t border-[var(--line)] bg-white px-6 py-4 shadow-lg md:hidden">
+        <div className="border-t border-[var(--line)] bg-white px-6 py-4 shadow-lg xl:hidden">
           <nav className="container flex flex-col gap-1">
             {navigation.map((item) => {
-              const isActive = isNavigationActive(item)
-              const isAnchor = item.href.startsWith('#')
+              if (item.children) {
+                return (
+                  <div key={item.label}>
+                    <button
+                      type="button"
+                      aria-expanded={isMobileServiceOpen}
+                      onClick={() =>
+                        setIsMobileServiceOpen(!isMobileServiceOpen)
+                      }
+                      className={`${mobileLinkClass(isServiceActive)} flex w-full items-center justify-between`}
+                    >
+                      <span>{item.label}</span>
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform ${
+                          isMobileServiceOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
 
-              const className = `rounded-lg px-3 py-3 text-sm font-semibold transition ${
-                isActive
-                  ? 'bg-[var(--green-light)] text-[var(--navy)]'
-                  : 'text-[var(--text)] hover:bg-[var(--green-light)] hover:text-[var(--navy)]'
-              }`
+                    {isMobileServiceOpen && (
+                      <div className="ml-3 mt-1 flex flex-col gap-1 border-l-2 border-[var(--green-light)] pl-3">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            to={child.href}
+                            className={mobileLinkClass(
+                              isActive(child.href),
+                            )}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              }
 
-              return isAnchor ? (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => {
-                    setActiveSection(item.href.replace('#', ''))
-                    handleNavigationClick()
-                  }}
-                  className={className}
-                >
-                  {item.label}
-                </a>
-              ) : (
+              return (
                 <Link
                   key={item.label}
                   to={item.href}
-                  onClick={handleNavigationClick}
-                  className={className}
+                  className={mobileLinkClass(isActive(item.href))}
                 >
                   {item.label}
                 </Link>
               )
             })}
 
+            <div className="my-2 border-t border-[var(--line)]" />
+
             {isAuthenticated && user ? (
               <>
                 <Link
                   to="/profile"
-                  onClick={handleNavigationClick}
-                  className="mt-2 flex items-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-sm font-bold text-[var(--navy)]"
+                  className="flex items-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-sm font-bold text-[var(--navy)]"
                 >
                   <UserRound size={17} />
                   Profil Saya
@@ -301,8 +308,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                onClick={handleNavigationClick}
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-center text-sm font-bold text-[var(--teal)] transition hover:bg-[var(--mint)]"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-center text-sm font-bold text-[var(--teal)] transition hover:bg-[var(--mint)]"
               >
                 <LogIn size={16} />
                 Masuk
