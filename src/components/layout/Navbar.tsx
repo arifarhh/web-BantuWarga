@@ -34,6 +34,7 @@ export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth()
   const location = useLocation()
 
+  // Tutup seluruh menu ketika berpindah halaman
   useEffect(() => {
     setIsMenuOpen(false)
     setIsProfileMenuOpen(false)
@@ -41,10 +42,12 @@ export default function Navbar() {
     setIsMobileServiceOpen(false)
   }, [location.pathname, location.hash])
 
+  // Status aktif menu layanan
   const isServiceActive =
     location.pathname === '/proposal' ||
     location.pathname === '/dispute'
 
+  // Memeriksa halaman yang sedang aktif
   const isActive = (href: string) => {
     if (href === '/') {
       return location.pathname === '/'
@@ -53,12 +56,14 @@ export default function Navbar() {
     return location.pathname === href
   }
 
+  // Logout
   const handleLogout = () => {
     logout()
     setIsProfileMenuOpen(false)
     setIsMenuOpen(false)
   }
 
+  // Styling menu desktop
   const desktopLinkClass = (active: boolean) =>
     `inline-flex h-[76px] items-center whitespace-nowrap border-b-2 text-[12px] font-semibold leading-none transition-colors duration-200 ${
       active
@@ -66,6 +71,7 @@ export default function Navbar() {
         : 'border-transparent text-[var(--text)] hover:border-[var(--green)] hover:text-[var(--green)]'
     }`
 
+  // Styling menu mobile
   const mobileLinkClass = (active: boolean) =>
     `block rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${
       active
@@ -75,12 +81,13 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/95 backdrop-blur-md">
-      <div className="container flex h-[76px] items-center justify-between gap-6">
+      <div className="container flex h-[76px] items-center justify-between gap-4">
 
         {/* Logo */}
         <Link
           to="/"
           className="flex shrink-0 items-center gap-3"
+          onClick={() => setIsMenuOpen(false)}
         >
           <img
             src="/logo/logo-bantu-warga.png"
@@ -99,27 +106,25 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden flex-1 items-center justify-center gap-6 xl:flex 2xl:gap-8">
+        <nav className="hidden flex-1 items-center justify-center gap-5 xl:flex 2xl:gap-8">
           {navigation.map((item) => {
             if (item.children) {
               return (
                 <div
                   key={item.label}
-                  className="relative h-[76px] flex items-center"
-                  onMouseEnter={() => setIsServiceMenuOpen(true)}
-                  onMouseLeave={() => setIsServiceMenuOpen(false)}
+                  className="relative flex h-[76px] items-center"
                 >
                   <button
                     type="button"
                     aria-expanded={isServiceMenuOpen}
+                    aria-haspopup="true"
                     onClick={() =>
-                      setIsServiceMenuOpen(!isServiceMenuOpen)
+                      setIsServiceMenuOpen((prev) => !prev)
                     }
-                    className={`${desktopLinkClass(isServiceActive)} gap-1.5 border-x-0 border-t-0 bg-transparent p-0 font-[inherit]`}
+                    className={`${desktopLinkClass(isServiceActive)} gap-1.5 border-x-0 border-t-0 bg-transparent p-0`}
                   >
-                    <span className="font-semibold">
-                      {item.label}
-                    </span>
+                    <span>{item.label}</span>
+
                     <ChevronDown
                       size={13}
                       strokeWidth={1.8}
@@ -135,6 +140,7 @@ export default function Navbar() {
                         <Link
                           key={child.href}
                           to={child.href}
+                          onClick={() => setIsServiceMenuOpen(false)}
                           className={`block rounded-lg px-3 py-2.5 text-xs font-semibold transition-colors ${
                             isActive(child.href)
                               ? 'bg-[var(--green-light)] text-[var(--navy)]'
@@ -170,7 +176,7 @@ export default function Navbar() {
                 type="button"
                 aria-expanded={isProfileMenuOpen}
                 onClick={() =>
-                  setIsProfileMenuOpen(!isProfileMenuOpen)
+                  setIsProfileMenuOpen((prev) => !prev)
                 }
                 className="inline-flex items-center gap-2 rounded-lg border border-[var(--line)] px-3 py-2 transition hover:bg-[var(--green-light)]"
               >
@@ -182,7 +188,12 @@ export default function Navbar() {
                   {user.name}
                 </span>
 
-                <ChevronDown size={14} />
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform ${
+                    isProfileMenuOpen ? 'rotate-180' : ''
+                  }`}
+                />
               </button>
 
               {isProfileMenuOpen && (
@@ -222,8 +233,8 @@ export default function Navbar() {
           type="button"
           aria-label={isMenuOpen ? 'Tutup menu' : 'Buka menu'}
           aria-expanded={isMenuOpen}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="rounded-lg p-2 text-[var(--navy)] hover:bg-[var(--green-light)] xl:hidden"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          className="flex shrink-0 items-center justify-center rounded-lg p-2 text-[var(--navy)] transition hover:bg-[var(--green-light)] xl:hidden"
         >
           {isMenuOpen ? <X size={23} /> : <Menu size={23} />}
         </button>
@@ -233,6 +244,7 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="border-t border-[var(--line)] bg-white px-6 py-4 shadow-lg xl:hidden">
           <nav className="container flex flex-col gap-1">
+
             {navigation.map((item) => {
               if (item.children) {
                 return (
@@ -240,15 +252,17 @@ export default function Navbar() {
                     <button
                       type="button"
                       aria-expanded={isMobileServiceOpen}
+                      aria-haspopup="true"
                       onClick={() =>
-                        setIsMobileServiceOpen(!isMobileServiceOpen)
+                        setIsMobileServiceOpen((prev) => !prev)
                       }
                       className={`${mobileLinkClass(isServiceActive)} flex w-full items-center justify-between`}
                     >
                       <span>{item.label}</span>
+
                       <ChevronDown
                         size={16}
-                        className={`transition-transform ${
+                        className={`transition-transform duration-200 ${
                           isMobileServiceOpen ? 'rotate-180' : ''
                         }`}
                       />
@@ -260,6 +274,10 @@ export default function Navbar() {
                           <Link
                             key={child.href}
                             to={child.href}
+                            onClick={() => {
+                              setIsMenuOpen(false)
+                              setIsMobileServiceOpen(false)
+                            }}
                             className={mobileLinkClass(
                               isActive(child.href),
                             )}
@@ -277,6 +295,7 @@ export default function Navbar() {
                 <Link
                   key={item.label}
                   to={item.href}
+                  onClick={() => setIsMenuOpen(false)}
                   className={mobileLinkClass(isActive(item.href))}
                 >
                   {item.label}
@@ -286,10 +305,12 @@ export default function Navbar() {
 
             <div className="my-2 border-t border-[var(--line)]" />
 
+            {/* Mobile Account Actions */}
             {isAuthenticated && user ? (
               <>
                 <Link
                   to="/profile"
+                  onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-sm font-bold text-[var(--navy)]"
                 >
                   <UserRound size={17} />
@@ -308,6 +329,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
+                onClick={() => setIsMenuOpen(false)}
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--green-light)] px-4 py-3 text-center text-sm font-bold text-[var(--teal)] transition hover:bg-[var(--mint)]"
               >
                 <LogIn size={16} />
