@@ -7,6 +7,7 @@ import ProtectedRoute from './components/common/ProtectedRoute'
 
 import HomePage from './pages/home/HomePage'
 import ProposalPage from './pages/proposal/ProposalPage'
+import DisputePage from './pages/dispute/DisputePage'
 import TrackingPage from './pages/tracking/TrackingPage'
 import GuidePage from './pages/guide/GuidePage'
 import AboutPage from './pages/about/AboutPage'
@@ -29,6 +30,15 @@ function App() {
             <Route path="/tentang" element={<AboutPage />} />
 
             {/* Halaman yang membutuhkan autentikasi */}
+            <Route
+              path="/dispute"
+              element={
+                <ProtectedRoute>
+                  <DisputePage />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/proposal"
               element={
