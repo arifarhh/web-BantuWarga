@@ -26,7 +26,7 @@ const services = [
     href: '/dispute',
   },
   {
-    title: 'Lacak Layanan',
+    title: 'Lacak Tiket',
     description:
       'Periksa perkembangan usulan atau laporan melalui nomor tiket dan pantau tahapan tindak lanjutnya.',
     icon: SearchCheck,
