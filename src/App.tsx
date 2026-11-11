@@ -18,10 +18,11 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Halaman publik dengan Navbar dan Footer */}
+          {/* Halaman publik: menggunakan Navbar dan Footer */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
 
+            {/* Halaman yang membutuhkan autentikasi */}
             <Route
               path="/proposal"
               element={
@@ -41,7 +42,7 @@ function App() {
             />
           </Route>
 
-          {/* Halaman autentikasi */}
+          {/* Halaman autentikasi: tanpa Navbar dan Footer */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-otp" element={<VerifyOTPPage />} />
