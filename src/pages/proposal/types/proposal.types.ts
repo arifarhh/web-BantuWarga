@@ -1,3 +1,4 @@
+
 export type ProposalStep =
   | 1
   | 2
@@ -9,19 +10,21 @@ export type ProposalStep =
 export type ProposalType = 'self' | 'other'
 
 export interface ProposalFormData {
+  // Identitas pengusul
   proposerName: string
   proposerNik: string
   proposerPhone: string
   proposerAddress: string
 
+  // Data calon penerima
   proposalType: ProposalType | ''
-
   recipientName: string
   recipientNik: string
   recipientPhone: string
   relationship: string
   recipientAddress: string
 
+  // Kondisi ekonomi
   occupation: string
   monthlyIncome: string
   dependents: string
@@ -29,8 +32,7 @@ export interface ProposalFormData {
   housingStatus: string
   additionalInformation: string
 
-  latitude: string
-  longitude: string
+  // Bukti pendukung
   housePhoto: File | null
 }
 
@@ -41,7 +43,6 @@ export const initialProposalData: ProposalFormData = {
   proposerAddress: '',
 
   proposalType: '',
-
   recipientName: '',
   recipientNik: '',
   recipientPhone: '',
@@ -55,7 +56,5 @@ export const initialProposalData: ProposalFormData = {
   housingStatus: '',
   additionalInformation: '',
 
-  latitude: '',
-  longitude: '',
   housePhoto: null,
 }

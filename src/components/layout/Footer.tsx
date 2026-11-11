@@ -132,6 +132,9 @@ export default function Footer() {
             <a href="#syarat-layanan" className="hover:text-[var(--green)]">
               Syarat Layanan
             </a>
+            <Link to="/admin/login" className="font-semibold text-emerald-800 hover:text-emerald-950 hover:underline">
+              Portal Verifikator / Admin
+            </Link>
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--green)]" />
               Sistem informasi publik
