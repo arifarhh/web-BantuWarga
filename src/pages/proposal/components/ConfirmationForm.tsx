@@ -3,6 +3,7 @@ import {
   CheckCircle2,
   FileText,
   ShieldCheck,
+  MapPin,
 } from 'lucide-react'
 
 import type { ProposalFormData } from '../types/proposal.types'
@@ -46,13 +47,15 @@ export default function ConfirmationForm({
         <h2 className="text-xl font-bold text-[var(--navy)]">
           Periksa Kembali Usulan
         </h2>
+
         <p className="mt-2 text-sm leading-relaxed text-[var(--text)]">
           Pastikan informasi yang dimasukkan sudah benar sebelum
-          melanjutkan proses pengajuan.
+          menyelesaikan pengisian.
         </p>
       </div>
 
       <div className="space-y-5">
+        {/* Data pengusul */}
         <section className="rounded-xl border border-[var(--line)] bg-white p-5">
           <div className="mb-2 flex items-center gap-2">
             <FileText size={18} className="text-[var(--teal)]" />
@@ -67,6 +70,7 @@ export default function ConfirmationForm({
           <SummaryItem label="Alamat" value={data.proposerAddress} />
         </section>
 
+        {/* Data calon penerima */}
         <section className="rounded-xl border border-[var(--line)] bg-white p-5">
           <div className="mb-2 flex items-center gap-2">
             <CheckCircle2 size={18} className="text-[var(--teal)]" />
@@ -85,13 +89,18 @@ export default function ConfirmationForm({
                   : '-'
             }
           />
+
           <SummaryItem label="Nama" value={data.recipientName} />
           <SummaryItem label="NIK" value={maskNik(data.recipientNik)} />
           <SummaryItem label="Nomor Telepon" value={data.recipientPhone} />
-          <SummaryItem label="Hubungan dengan Pengusul" value={data.relationship} />
+          <SummaryItem
+            label="Hubungan dengan Pengusul"
+            value={data.relationship}
+          />
           <SummaryItem label="Alamat" value={data.recipientAddress} />
         </section>
 
+        {/* Kondisi ekonomi */}
         <section className="rounded-xl border border-[var(--line)] bg-white p-5">
           <div className="mb-2 flex items-center gap-2">
             <ShieldCheck size={18} className="text-[var(--teal)]" />
@@ -101,33 +110,49 @@ export default function ConfirmationForm({
           </div>
 
           <SummaryItem label="Pekerjaan" value={data.occupation} />
-          <SummaryItem label="Penghasilan per Bulan" value={data.monthlyIncome} />
-          <SummaryItem label="Jumlah Tanggungan" value={data.dependents} />
-          <SummaryItem label="Kondisi Rumah" value={data.houseCondition} />
-          <SummaryItem label="Status Tempat Tinggal" value={data.housingStatus} />
+          <SummaryItem
+            label="Penghasilan per Bulan"
+            value={data.monthlyIncome}
+          />
+          <SummaryItem
+            label="Jumlah Tanggungan"
+            value={data.dependents}
+          />
+          <SummaryItem
+            label="Kondisi Rumah"
+            value={data.houseCondition}
+          />
+          <SummaryItem
+            label="Status Tempat Tinggal"
+            value={data.housingStatus}
+          />
           <SummaryItem
             label="Informasi Tambahan"
             value={data.additionalInformation}
           />
         </section>
 
+        {/* Lokasi dan bukti */}
         <section className="rounded-xl border border-[var(--line)] bg-white p-5">
           <div className="mb-2 flex items-center gap-2">
-            <FileText size={18} className="text-[var(--teal)]" />
+            <MapPin size={18} className="text-[var(--teal)]" />
             <h3 className="font-semibold text-[var(--navy)]">
               Lokasi dan Bukti
             </h3>
           </div>
 
-          <SummaryItem label="Alamat Lokasi" value={data.recipientAddress} />
-          <SummaryItem label="Latitude" value={data.latitude} />
-          <SummaryItem label="Longitude" value={data.longitude} />
           <SummaryItem
-            label="Foto Kondisi Rumah"
+            label="Alamat Calon Penerima"
+            value={data.recipientAddress}
+          />
+
+          <SummaryItem
+            label="Foto Kondisi Tempat Tinggal"
             value={data.housePhoto?.name ?? 'Belum ada foto'}
           />
         </section>
 
+        {/* Persetujuan */}
         <div className="rounded-xl border border-[var(--line)] bg-[var(--green-light)] p-4">
           <label className="flex cursor-pointer items-start gap-3">
             <input
