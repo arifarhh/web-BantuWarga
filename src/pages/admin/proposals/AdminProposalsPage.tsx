@@ -219,9 +219,9 @@ export default function AdminProposalsPage() {
           <button
             type="button"
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3.5 py-2.5 text-xs font-bold text-[var(--teal)] shadow-sm transition hover:bg-[var(--green-light)] cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-xl border border-[var(--teal)] bg-[var(--teal)] px-3.5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[var(--navy)] hover:border-[var(--navy)] cursor-pointer"
           >
-            <Download size={15} className="text-emerald-700" />
+            <Download size={15} />
             Ekspor Data (.CSV)
           </button>
 
@@ -229,7 +229,7 @@ export default function AdminProposalsPage() {
             type="button"
             onClick={handleResetData}
             title="Kembalikan data ke contoh awal Kota Malang"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2.5 text-xs font-semibold text-[var(--text)] hover:bg-[var(--green-light)] cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2.5 text-xs font-semibold text-[var(--text)] hover:border-[var(--teal)] hover:text-[var(--teal)] cursor-pointer"
           >
             <RotateCcw size={14} />
             Reset Data Demo
@@ -520,7 +520,7 @@ export default function AdminProposalsPage() {
                             type="button"
                             onClick={() => setVerifyModalItem(item)}
                             title="Proses verifikasi atau ubah status"
-                            className="inline-flex items-center gap-1 rounded-lg bg-emerald-700 px-2.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-800 cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded-lg bg-[var(--teal)] px-2.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-[var(--navy)] cursor-pointer"
                           >
                             <CheckCircle size={13} />
                             Verifikasi
