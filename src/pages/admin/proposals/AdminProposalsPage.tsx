@@ -195,7 +195,7 @@ export default function AdminProposalsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-[var(--ink)]">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-60 flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-xs font-bold text-white shadow-xl animate-bounce">
@@ -207,10 +207,10 @@ export default function AdminProposalsPage() {
       {/* Top Banner & Actions */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-[#1B3C53]">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[var(--navy)]">
             Manajemen Usulan Bantuan Sosial
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-slate-500">
+          <p className="mt-1 text-xs sm:text-sm text-[var(--text)]">
             Wilayah Kerja Dinas Sosial Kota Malang • Data Terintegrasi Terbuka
           </p>
         </div>
@@ -219,7 +219,7 @@ export default function AdminProposalsPage() {
           <button
             type="button"
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3.5 py-2.5 text-xs font-bold text-[var(--teal)] shadow-sm transition hover:bg-[var(--green-light)] cursor-pointer"
           >
             <Download size={15} className="text-emerald-700" />
             Ekspor Data (.CSV)
@@ -229,7 +229,7 @@ export default function AdminProposalsPage() {
             type="button"
             onClick={handleResetData}
             title="Kembalikan data ke contoh awal Kota Malang"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2.5 text-xs font-semibold text-[var(--text)] hover:bg-[var(--green-light)] cursor-pointer"
           >
             <RotateCcw size={14} />
             Reset Data Demo
