@@ -8,6 +8,7 @@ import ProtectedRoute from './components/common/ProtectedRoute'
 import HomePage from './pages/home/HomePage'
 import ProposalPage from './pages/proposal/ProposalPage'
 import TrackingPage from './pages/tracking/TrackingPage'
+import GuidePage from './pages/guide/GuidePage'
 
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
@@ -23,6 +24,7 @@ function App() {
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/tracking" element={<TrackingPage />} />
+            <Route path="/panduan" element={<GuidePage />} />
 
             {/* Halaman yang membutuhkan autentikasi */}
             <Route
