@@ -66,8 +66,6 @@ export interface ProposalItem {
   additionalInformation: string
 
   // Lokasi & Bukti
-  latitude: string
-  longitude: string
   housePhotoUrl?: string // URL atau base64 gambar tempat tinggal
   housePhotoName?: string
 

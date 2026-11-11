@@ -95,7 +95,6 @@ export default function AdminProposalsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedDistrict, setSelectedDistrict] = useState('Semua Kecamatan')
   const [selectedStatus, setSelectedStatus] = useState('all')
-  const [selectedHouseCondition, setSelectedHouseCondition] = useState('all')
   const [sortBy, setSortBy] = useState<'date_desc' | 'date_asc' | 'priority_desc'>('date_desc')
 
   // Modals State
@@ -154,11 +153,6 @@ export default function AdminProposalsPage() {
           return false
         }
 
-        // House Condition Filter
-        if (selectedHouseCondition !== 'all' && item.houseCondition !== selectedHouseCondition) {
-          return false
-        }
-
         return true
       })
       .sort((a, b) => {
@@ -173,7 +167,7 @@ export default function AdminProposalsPage() {
         }
         return 0
       })
-  }, [proposals, searchQuery, selectedDistrict, selectedStatus, selectedHouseCondition, sortBy])
+  }, [proposals, searchQuery, selectedDistrict, selectedStatus, sortBy])
 
   const handleExportCSV = () => {
     proposalService.exportToCSV(filteredProposals)

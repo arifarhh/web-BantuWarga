@@ -8,7 +8,6 @@ import {
   Shield,
   Eye,
   EyeOff,
-  ExternalLink,
   Calendar,
   AlertTriangle,
   CheckCircle,
@@ -435,35 +434,13 @@ export default function ProposalDetailModal({
                   <div className="rounded-xl border border-slate-200 bg-white p-5">
                     <h4 className="font-bold text-[#1B3C53] flex items-center gap-2 text-sm mb-3">
                       <MapPin size={17} className="text-emerald-600" />
-                      Titik Lokasi Tempat Tinggal
+                      Alamat Tempat Tinggal
                     </h4>
 
                     <p className="text-xs text-slate-600 leading-relaxed mb-4">
                       {proposal.recipientAddress}
                     </p>
 
-                    <div className="rounded-lg bg-slate-50 p-3 border border-slate-100 text-xs space-y-1.5 font-mono">
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Latitude:</span>
-                        <span className="font-semibold text-slate-800">{proposal.latitude || '-7.9786'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Longitude:</span>
-                        <span className="font-semibold text-slate-800">{proposal.longitude || '112.6318'}</span>
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <a
-                        href={`https://www.google.com/maps?q=${proposal.latitude || '-7.9786'},${proposal.longitude || '112.6318'}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-slate-100 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-200"
-                      >
-                        <ExternalLink size={14} />
-                        Buka di Google Maps
-                      </a>
-                    </div>
                   </div>
 
                   {/* Info Penugasan Survei bila ada */}
