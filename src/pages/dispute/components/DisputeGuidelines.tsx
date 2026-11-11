@@ -10,7 +10,7 @@ const guidelines = [
   {
     title: 'Jelaskan konteks',
     description:
-      'Cantumkan wilayah kejadian dan keterangan yang membantu petugas memahami laporan.',
+      'Cantumkan lokasi dan keterangan yang membantu petugas memahami laporan.',
     icon: MapPin,
   },
   {
@@ -44,7 +44,7 @@ export function DisputeGuidelines() {
                   key={guideline.title}
                   className="rounded-2xl border border-[var(--line)] bg-white p-5 sm:p-6"
                 >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#FBF1E2] text-[#9A6B2F]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--green-light)] text-[var(--teal)]">
                     <Icon size={21} />
                   </span>
                   <h3 className="mt-5 text-base font-extrabold text-[var(--navy)]">

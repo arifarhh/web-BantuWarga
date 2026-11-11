@@ -42,11 +42,18 @@ export function DisputeForm() {
             <option value="" disabled>
               Pilih jenis ketidaksesuaian
             </option>
-            <option value="recipient-data">Data penerima tidak sesuai</option>
-            <option value="changed-circumstances">
-              Kondisi penerima telah berubah
+            <option value="recipient-data">
+              Data penerima tidak sesuai dengan kondisi sebenarnya.
             </option>
-            <option value="duplicate-record">Data penerima terduplikasi</option>
+            <option value="changed-circumstances">
+              Kondisi ekonomi penerima telah berubah.
+            </option>
+            <option value="duplicate-record">
+              Data penerima terduplikasi.
+            </option>
+            <option value="assistance-issue">
+              Bantuan tidak diterima atau tidak sesuai.
+            </option>
             <option value="other">Lainnya</option>
           </select>
         </div>
@@ -56,14 +63,17 @@ export function DisputeForm() {
             htmlFor="dispute-address"
             className="mb-2 block text-sm font-semibold text-[var(--ink)]"
           >
-            Alamat
+            Lokasi ketidaksesuaian
           </label>
+          <p className="mb-2 text-xs leading-5 text-[var(--text)]">
+            Wilayah tempat ketidaksesuaian ditemukan.
+          </p>
           <input
             id="dispute-address"
             name="address"
             type="text"
             required
-            placeholder="Masukkan alamat lengkap lokasi yang dilaporkan"
+            placeholder="Contoh: Kelurahan Lowokwaru, Kecamatan Lowokwaru, Kota Malang"
             className={inputClass}
           />
         </div>
@@ -80,36 +90,36 @@ export function DisputeForm() {
             name="description"
             rows={5}
             required
-            minLength={20}
-            placeholder="Jelaskan informasi yang Anda ketahui (minimal 20 karakter)"
+            placeholder="Jelaskan ketidaksesuaian yang Anda ketahui, kondisi yang ditemukan, serta informasi lain yang dapat membantu proses pemeriksaan. Hindari dugaan yang tidak memiliki dasar."
             className={inputClass}
           />
         </div>
 
         <div>
-          <label
-            htmlFor="dispute-evidence"
-            className="mb-2 block text-sm font-semibold text-[var(--ink)]"
-          >
+          <p className="mb-2 text-sm font-semibold text-[var(--ink)]">
             Bukti pendukung
             <span className="ml-1 font-normal text-[var(--muted)]">
               (opsional)
             </span>
-          </label>
-          <div className="rounded-xl border border-dashed border-[var(--line)] bg-[var(--background)] p-4">
-            <label
-              htmlFor="dispute-evidence"
-              className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--navy)] transition hover:border-[var(--green)] hover:bg-[var(--green-light)]"
+          </p>
+          <div className="rounded-xl border border-dashed border-[#B8D8C1] bg-[var(--green-light)] p-4">
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById('dispute-evidence')?.click()
+              }
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--navy)] transition hover:border-[var(--green)] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--green)] focus-visible:ring-offset-2"
             >
               <Upload size={17} />
               Pilih berkas
-            </label>
+            </button>
             <input
               id="dispute-evidence"
               name="evidence"
               type="file"
               accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
               multiple
+              aria-label="Pilih bukti pendukung"
               onChange={(event) => {
                 setEvidenceFiles(
                   Array.from(event.currentTarget.files ?? []).map(
@@ -119,12 +129,12 @@ export function DisputeForm() {
               }}
               className="sr-only"
             />
-            <p className="mt-3 text-xs leading-5 text-[var(--muted)]">
+            <p className="mt-3 text-xs leading-5 text-[var(--text)]">
               Unggah foto atau dokumen pendukung dalam format JPG, PNG, atau
               PDF.
             </p>
             {evidenceFiles.length > 0 && (
-              <ul className="mt-3 space-y-1 text-xs text-[var(--text)]">
+              <ul className="mt-3 space-y-1 text-xs text-[var(--navy)]">
                 {evidenceFiles.map((fileName) => (
                   <li key={fileName} className="truncate">
                     {fileName}
