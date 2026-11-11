@@ -3,7 +3,7 @@ import { Phone, ArrowUpRight } from 'lucide-react'
 
 const serviceLinks = [
   { label: 'Usul Warga', href: '/proposal' },
-  { label: 'Sanggah Warga', href: '#sanggah-warga' },
+  { label: 'Sanggah Warga', href: '/dispute' },
   { label: 'Lacak Tiket', href: '/tracking' },
 ]
 
