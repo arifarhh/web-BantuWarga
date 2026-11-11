@@ -7,6 +7,7 @@ import ProtectedRoute from './components/common/ProtectedRoute'
 
 import HomePage from './pages/home/HomePage'
 import ProposalPage from './pages/proposal/ProposalPage'
+import TrackingPage from './pages/tracking/TrackingPage'
 
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
@@ -21,6 +22,7 @@ function App() {
           {/* Halaman publik: menggunakan Navbar dan Footer */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/tracking" element={<TrackingPage />} />
 
             {/* Halaman yang membutuhkan autentikasi */}
             <Route
