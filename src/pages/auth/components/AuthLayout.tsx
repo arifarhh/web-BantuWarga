@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom'
+
 import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 
 interface AuthLayoutProps {
@@ -18,32 +19,33 @@ export default function AuthLayout({
   backLabel = 'Kembali ke Beranda',
 }: AuthLayoutProps) {
   return (
-    <section className="min-h-screen bg-[var(--background)] px-4 py-10 md:py-14">
-      <div className="mx-auto max-w-md">
-
+    <main className="flex min-h-screen flex-col bg-[var(--background)] px-4 py-8 sm:py-12">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
+        {/* Logo */}
         <Link
           to="/"
-          className="mb-8 flex items-center justify-center gap-3"
+          className="mb-7 flex items-center justify-center gap-3"
         >
           <img
             src="/logo/logo-bantu-warga.png"
             alt="Logo BantuWarga"
-            className="h-12 w-12 object-contain"
+            className="h-11 w-11 object-contain"
           />
 
           <div>
-            <p className="text-base font-extrabold text-[var(--navy)]">
+            <p className="text-base font-extrabold tracking-tight text-[var(--navy)]">
               BantuWarga
             </p>
-            <p className="text-[9px] tracking-wider text-[var(--muted)]">
+            <p className="mt-0.5 text-[9px] font-medium tracking-[0.08em] text-[var(--muted)]">
               PORTAL TRANSPARANSI BANSOS
             </p>
           </div>
         </Link>
 
-        <div className="rounded-2xl border border-[var(--line)] bg-white p-6 shadow-sm md:p-8">
-          <div className="mb-7 text-center">
-            <h1 className="text-2xl font-extrabold text-[var(--navy)]">
+        {/* Auth Card */}
+        <section className="rounded-2xl border border-[var(--line)] bg-white p-6 shadow-[0_12px_40px_rgba(23,60,81,0.06)] sm:p-8">
+          <div className="mb-7">
+            <h1 className="text-2xl font-extrabold tracking-tight text-[var(--navy)]">
               {title}
             </h1>
 
@@ -53,21 +55,21 @@ export default function AuthLayout({
           </div>
 
           {children}
-        </div>
+        </section>
 
+        {/* Back Link */}
         <Link
           to={backTo}
-          className="mt-6 flex items-center justify-center gap-2 text-xs font-semibold text-[var(--text)] transition hover:text-[var(--green)]"
+          className="mt-6 inline-flex items-center justify-center gap-2 text-xs font-semibold text-[var(--muted)] transition hover:text-[var(--green)]"
         >
           <ArrowLeft size={14} />
           {backLabel}
         </Link>
-
-        <p className="mt-8 text-center text-[10px] text-[var(--muted)]">
-          © {new Date().getFullYear()} BantuWarga. Portal Transparansi
-          Bantuan Sosial.
-        </p>
       </div>
-    </section>
+
+      <p className="mt-8 text-center text-[10px] text-[var(--muted)]">
+        © {new Date().getFullYear()} BantuWarga
+      </p>
+    </main>
   )
 }

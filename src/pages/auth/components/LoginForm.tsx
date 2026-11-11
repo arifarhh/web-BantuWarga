@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Phone, ArrowRight, ShieldCheck } from 'lucide-react'
-import type { FormEvent } from 'react'
+
+import { useState, type FormEvent } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { ArrowRight, Phone } from 'lucide-react'
 
 export default function LoginForm() {
   const navigate = useNavigate()
@@ -11,12 +11,13 @@ export default function LoginForm() {
   const [error, setError] = useState('')
 
   const from = location.state?.from
-    const redirectTo =
+
+  const redirectTo =
     from?.pathname &&
     from.pathname.startsWith('/') &&
     !from.pathname.startsWith('//')
-        ? `${from.pathname}${from.search ?? ''}${from.hash ?? ''}`
-        : '/'
+      ? `${from.pathname}${from.search ?? ''}${from.hash ?? ''}`
+      : '/'
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -40,22 +41,28 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="mb-2 block text-xs font-bold text-[var(--navy)]">
+        <label
+          htmlFor="phone"
+          className="mb-2 block text-sm font-semibold text-[var(--navy)]"
+        >
           Nomor HP
         </label>
 
-        <div className="flex items-center rounded-lg border border-[var(--line)] px-3 focus-within:border-[var(--green)]">
-          <Phone size={17} className="text-[var(--muted)]" />
+        <div className="flex items-center rounded-xl border border-[var(--line)] px-3 transition focus-within:border-[var(--green)] focus-within:ring-2 focus-within:ring-[var(--green-light)]">
+          <Phone size={17} className="shrink-0 text-[var(--muted)]" />
 
           <input
+            id="phone"
             type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
             value={phone}
             onChange={(e) => {
               setPhone(e.target.value.replace(/\D/g, '').slice(0, 15))
               setError('')
             }}
-            placeholder="Contoh: 081234567890"
-            className="w-full border-0 bg-transparent px-3 py-3 text-sm outline-none"
+            placeholder="08xxxxxxxxxx"
+            className="w-full bg-transparent px-3 py-3.5 text-sm text-[var(--navy)] outline-none placeholder:text-[var(--muted)]"
             required
           />
         </div>
@@ -65,28 +72,21 @@ export default function LoginForm() {
         )}
       </div>
 
-      <div className="flex gap-2 rounded-lg bg-[var(--green-light)] p-3">
-        <ShieldCheck size={17} className="shrink-0 text-[var(--green)]" />
-        <p className="text-xs leading-5 text-[var(--text)]">
-          Nomor HP digunakan untuk proses verifikasi dan keamanan akun.
-        </p>
-      </div>
-
       <button
         type="submit"
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--dark-teal)] px-4 py-3 text-sm font-bold text-white transition hover:bg-[var(--teal)]"
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--teal)] px-4 py-3.5 text-sm font-bold text-white transition hover:bg-[var(--navy)]"
       >
         Lanjutkan
         <ArrowRight size={16} />
       </button>
 
-      <p className="text-center text-xs text-[var(--text)]">
-        Belum memiliki akun?{' '}
+      <p className="text-center text-sm text-[var(--text)]">
+        Belum punya akun?{' '}
         <Link
           to="/register"
           className="font-bold text-[var(--green)] hover:underline"
         >
-          Daftar sekarang
+          Daftar
         </Link>
       </p>
     </form>

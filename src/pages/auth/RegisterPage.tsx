@@ -1,13 +1,14 @@
+
 import AuthLayout from './components/AuthLayout'
 import RegisterForm from './components/RegisterForm'
 
 export default function RegisterPage() {
   return (
     <AuthLayout
-      title="Buat Akun"
-      description="Lengkapi data diri untuk membuat akun BantuWarga."
+      title="Buat akun baru"
+      description="Isi informasi berikut untuk mendaftarkan akun BantuWarga."
       backTo="/login"
-      backLabel="Kembali ke Login"
+      backLabel="Sudah punya akun? Masuk"
     >
       <RegisterForm />
     </AuthLayout>
