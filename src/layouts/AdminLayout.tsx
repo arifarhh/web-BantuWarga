@@ -7,7 +7,6 @@ import {
   ExternalLink,
   Menu,
   X,
-  Building2,
   FileSpreadsheet,
   CheckCircle2,
   UserCheck,
@@ -36,15 +35,13 @@ export default function AdminLayout() {
       label: 'Sanggahan Warga',
       href: '/admin/sanggahan',
       icon: ShieldAlert,
-      badge: 'Segera',
-      disabled: true,
     },
   ]
 
   const isActive = (href: string) => location.pathname === href
 
   return (
-    <div className="flex min-h-screen bg-[#F4F7F8] text-[#183242]">
+    <div className="flex min-h-screen bg-[var(--background)] text-[var(--ink)]">
       {/* Mobile Backdrop */}
       {isSidebarOpen && (
         <div
@@ -55,7 +52,7 @@ export default function AdminLayout() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col justify-between border-r border-slate-200 bg-[#0C2431] text-white transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col justify-between border-r border-[var(--dark-teal)] bg-[var(--dark-teal)] text-white transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -63,14 +60,12 @@ export default function AdminLayout() {
           {/* Logo & Header */}
           <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
             <Link to="/admin/usulan" className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/30 text-emerald-400 ring-1 ring-emerald-500/40">
-                <Building2 size={22} />
-              </div>
+              <img src="/logo/logo-bantu-warga.png" alt="" className="h-10 w-10 rounded-xl object-contain" />
               <div>
                 <p className="text-sm font-extrabold tracking-tight text-white">
                   BantuWarga
                 </p>
-                <p className="text-[10px] font-semibold tracking-wider text-emerald-400">
+                <p className="text-[10px] font-semibold tracking-wider text-[var(--light-green)]">
                   ADMIN VERIFIKATOR
                 </p>
               </div>
@@ -88,14 +83,14 @@ export default function AdminLayout() {
           {/* Verifier Profile Card */}
           <div className="m-4 rounded-xl border border-white/10 bg-white/5 p-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-bold shadow-md">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--teal)] text-white font-bold shadow-md">
                 <UserCheck size={20} />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-xs font-bold text-white">
                   {adminUser?.name || 'Verifikator Dinsos'}
                 </p>
-                <p className="truncate text-[10px] text-emerald-300 font-medium">
+                <p className="truncate text-[10px] text-[var(--mint)] font-medium">
                   {adminUser?.roleLabel || 'Petugas Verifikator'}
                 </p>
                 <p className="text-[10px] text-slate-400 font-mono">
@@ -123,23 +118,6 @@ export default function AdminLayout() {
               const Icon = item.icon
               const active = isActive(item.href)
 
-              if (item.disabled) {
-                return (
-                  <div
-                    key={item.label}
-                    className="flex items-center justify-between rounded-xl px-3.5 py-3 text-xs font-medium text-slate-500 cursor-not-allowed opacity-60"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon size={18} />
-                      <span>{item.label}</span>
-                    </div>
-                    <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[9px] text-slate-400">
-                      {item.badge}
-                    </span>
-                  </div>
-                )
-              }
-
               return (
                 <Link
                   key={item.label}
@@ -147,7 +125,7 @@ export default function AdminLayout() {
                   onClick={() => setIsSidebarOpen(false)}
                   className={`flex items-center justify-between rounded-xl px-3.5 py-3 text-xs font-semibold transition ${
                     active
-                      ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md shadow-emerald-900/30'
+                    ? 'bg-[var(--teal)] text-white shadow-md'
                       : 'text-slate-300 hover:bg-white/5 hover:text-white'
                   }`}
                 >
@@ -160,7 +138,7 @@ export default function AdminLayout() {
                       className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${
                         active
                           ? 'bg-white/20 text-white'
-                          : 'bg-emerald-950 text-emerald-400 border border-emerald-800'
+                          : 'bg-[var(--dark-teal)] text-[var(--light-green)] border border-[var(--teal)]'
                       }`}
                     >
                       {item.badge}

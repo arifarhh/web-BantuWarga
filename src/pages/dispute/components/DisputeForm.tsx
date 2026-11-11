@@ -10,6 +10,22 @@ export function DisputeForm() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    const records = JSON.parse(localStorage.getItem('bantuwarga_disputes') || '[]')
+    records.unshift({
+      id: crypto.randomUUID(),
+      category: formData.get('category'),
+      address: formData.get('address'),
+      description: formData.get('description'),
+      evidenceFiles,
+      submittedAt: new Date().toISOString(),
+      status: 'Menunggu Ditinjau',
+    })
+    localStorage.setItem('bantuwarga_disputes', JSON.stringify(records))
+    window.dispatchEvent(new Event('bantuwarga_disputes_updated'))
+    form.reset()
+    setEvidenceFiles([])
     setSubmissionAttempted(true)
   }
 
@@ -102,7 +118,7 @@ export function DisputeForm() {
               (opsional)
             </span>
           </p>
-          <div className="rounded-xl border border-dashed border-[#B8D8C1] bg-[var(--green-light)] p-4">
+          <div className="rounded-xl border border-dashed border-[var(--line)] bg-[var(--background)] p-4">
             <button
               type="button"
               onClick={() =>
@@ -152,9 +168,7 @@ export function DisputeForm() {
               className="mt-0.5 shrink-0 text-amber-700"
             />
             <p className="text-xs leading-5 text-amber-950">
-              Formulir ini belum terhubung ke layanan pengiriman laporan.
-              Informasi yang diisi belum akan diterima atau diproses oleh
-              petugas.
+          Laporan akan disimpan pada perangkat ini untuk ditinjau oleh petugas.
             </p>
           </div>
         </div>
@@ -173,8 +187,7 @@ export function DisputeForm() {
           role="status"
           className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-950"
         >
-          Formulir belum dikirim. Layanan pengiriman sanggahan belum tersedia
-          pada aplikasi ini.
+          Sanggahan berhasil disimpan dan tercatat pada halaman manajemen admin.
         </p>
       )}
     </div>

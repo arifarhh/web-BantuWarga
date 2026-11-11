@@ -21,6 +21,7 @@ import ProfilePage from './pages/auth/ProfilePage'
 
 import AdminLoginPage from './pages/admin/auth/AdminLoginPage'
 import AdminProposalsPage from './pages/admin/proposals/AdminProposalsPage'
+import AdminDisputesPage from './pages/admin/disputes/AdminDisputesPage'
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
             >
               <Route index element={<Navigate to="/admin/usulan" replace />} />
               <Route path="usulan" element={<AdminProposalsPage />} />
+              <Route path="sanggahan" element={<AdminDisputesPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
