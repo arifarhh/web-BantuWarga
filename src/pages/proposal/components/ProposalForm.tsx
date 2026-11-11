@@ -1,6 +1,14 @@
 
 import { useState } from 'react'
-import { ArrowLeft, ArrowRight, CheckCircle2, Info } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Info,
+  Copy,
+  Check,
+} from 'lucide-react'
 
 import ProposalSteps from './ProposalSteps'
 import IdentityForm from './IdentityForm'
@@ -14,6 +22,7 @@ import {
   type ProposalFormData,
   type ProposalStep,
 } from '../types/proposal.types'
+import { proposalService } from '../../../services/proposalService'
 
 export default function ProposalForm() {
   const [currentStep, setCurrentStep] = useState<ProposalStep>(1)
@@ -22,6 +31,8 @@ export default function ProposalForm() {
   const [errorMessage, setErrorMessage] = useState('')
   const [consent, setConsent] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
+  const [createdTicket, setCreatedTicket] = useState('')
+  const [isCopied, setIsCopied] = useState(false)
 
   const handleChange = (
     field: keyof ProposalFormData,
@@ -152,7 +163,7 @@ export default function ProposalForm() {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!consent) {
       setErrorMessage('Berikan persetujuan sebelum menyelesaikan pengisian.')
       return
@@ -160,40 +171,105 @@ export default function ProposalForm() {
 
     setErrorMessage('')
 
-    // Simulasi penyelesaian frontend.
-    // Belum menyimpan data ke backend.
+    let photoDataUrl: string | undefined = undefined
+    if (formData.housePhoto) {
+      try {
+        photoDataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result as string)
+          reader.onerror = reject
+          reader.readAsDataURL(formData.housePhoto as Blob)
+        })
+      } catch {
+        // Abaikan jika gagal baca
+      }
+    }
+
+    // Simpan ke data store terpusat
+    const created = proposalService.addProposal(formData, photoDataUrl)
+    setCreatedTicket(created.ticketCode)
     setIsCompleted(true)
+  }
+
+  const handleCopyTicket = () => {
+    if (!createdTicket) return
+    navigator.clipboard.writeText(createdTicket)
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 2000)
   }
 
   if (isCompleted) {
     return (
-      <div className="rounded-2xl border border-[var(--line)] bg-white px-6 py-12 text-center shadow-sm md:px-10">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--green-light)] text-[var(--green)]">
-          <CheckCircle2 size={34} />
+      <div className="rounded-2xl border border-[var(--line)] bg-white px-6 py-10 text-center shadow-sm md:px-10">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--green-light)] text-[var(--green)]">
+          <CheckCircle2 size={36} />
         </div>
 
-        <h2 className="mt-5 text-2xl font-bold text-[var(--navy)]">
-          Pengisian Usulan Selesai
+        <h2 className="mt-4 text-2xl font-bold text-[var(--navy)]">
+          Usulan Berhasil Dikirim!
         </h2>
 
-        <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[var(--text)]">
-          Seluruh tahapan formulir telah dilengkapi. Data ini masih berupa
-          simulasi dan belum dikirim atau disimpan ke server.
+        <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-[var(--text)]">
+          Seluruh tahapan formulir telah dilengkapi dan data usulan telah tersimpan ke dalam sistem untuk ditinjau oleh petugas verifikator.
         </p>
 
-        <button
-          type="button"
-          onClick={() => {
-            setFormData(initialProposalData)
-            setCurrentStep(1)
-            setConsent(false)
-            setIsCompleted(false)
-            setErrorMessage('')
-          }}
-          className="mt-7 rounded-lg bg-[var(--teal)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--navy)]"
-        >
-          Buat Usulan Baru
-        </button>
+        {/* Kotak Kode Tiket */}
+        <div className="mx-auto mt-6 max-w-md rounded-xl border border-[var(--line)] bg-[var(--green-light)]/60 p-4">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--teal)]">
+            Kode Tiket Pelacakan Anda:
+          </p>
+          <div className="mt-2 flex items-center justify-center gap-2">
+            <span className="font-mono text-2xl font-extrabold text-[var(--navy)]">
+              {createdTicket}
+            </span>
+            <button
+              type="button"
+              onClick={handleCopyTicket}
+              title="Salin Kode Tiket"
+              className="rounded-lg bg-white p-2 text-[var(--teal)] shadow-sm border border-[var(--line)] hover:bg-[var(--green-light)] transition cursor-pointer"
+            >
+              {isCopied ? <Check size={16} className="text-[var(--green)]" /> : <Copy size={16} />}
+            </button>
+          </div>
+          <p className="mt-2 text-[11px] text-[var(--text)]">
+            Simpan kode tiket ini untuk memantau proses verifikasi bantuan sosial.
+          </p>
+        </div>
+
+        {/* Panduan Tindak Lanjut Warga */}
+        <div className="mx-auto mt-5 max-w-md rounded-xl border border-[var(--line)] bg-[var(--background)] p-4 text-left text-xs">
+          <div className="flex items-center gap-2 font-bold text-[var(--navy)] mb-1.5">
+            <Info size={16} className="text-[var(--teal)] shrink-0" />
+            <span>Tahapan Selanjutnya:</span>
+          </div>
+          <p className="text-[11px] leading-relaxed text-[var(--text)]">
+            Usulan Anda akan diverifikasi kelengkapan berkasnya oleh tim verifikator Dinas Sosial Kota Malang. Perkembangan status usulan dapat dipantau secara berkala menggunakan kode tiket di atas.
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--teal)] px-6 py-3 text-xs font-bold text-white transition hover:bg-[var(--navy)]"
+          >
+            Kembali ke Beranda
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => {
+              setFormData(initialProposalData)
+              setCurrentStep(1)
+              setConsent(false)
+              setIsCompleted(false)
+              setErrorMessage('')
+              setCreatedTicket('')
+            }}
+            className="inline-flex items-center justify-center rounded-lg border border-[var(--line)] bg-white px-6 py-3 text-xs font-bold text-[var(--navy)] transition hover:bg-slate-50 cursor-pointer"
+          >
+            Buat Usulan Baru
+          </button>
+        </div>
       </div>
     )
   }
