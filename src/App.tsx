@@ -7,6 +7,10 @@ import ProtectedRoute from './components/common/ProtectedRoute'
 
 import HomePage from './pages/home/HomePage'
 import ProposalPage from './pages/proposal/ProposalPage'
+import DisputePage from './pages/dispute/DisputePage'
+import TrackingPage from './pages/tracking/TrackingPage'
+import GuidePage from './pages/guide/GuidePage'
+import AboutPage from './pages/about/AboutPage'
 
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
@@ -21,6 +25,18 @@ function App() {
           {/* Halaman publik dengan Navbar dan Footer */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/tracking" element={<TrackingPage />} />
+            <Route path="/panduan" element={<GuidePage />} />
+            <Route path="/tentang" element={<AboutPage />} />
+
+            <Route
+              path="/dispute"
+              element={
+                <ProtectedRoute>
+                  <DisputePage />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="/proposal"
